@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InAppPurchase.Service", "src\InAppPurchase.Service.csproj", "{1DF14CAD-2404-4008-A88C-EE5C5998E10E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1DF14CAD-2404-4008-A88C-EE5C5998E10E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DF14CAD-2404-4008-A88C-EE5C5998E10E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DF14CAD-2404-4008-A88C-EE5C5998E10E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DF14CAD-2404-4008-A88C-EE5C5998E10E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {50E1CBE5-3449-4086-8B62-4C405143E3C2}
+	EndGlobalSection
+EndGlobal
