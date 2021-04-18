@@ -11,14 +11,14 @@ using System.Diagnostics;
 namespace Companova.Xamarin.InAppPurchase.Service
 {
     /// <summary>
-    /// Key class that provides access to StoreKit in-app-purchases features.
-    /// Call:
-    /// - Start to add an Observer to the Queue
-    /// - Stop to remove the Observer from the Queue
-    /// - LoadProductsAsync to retrieve a list of Products
-    /// - CanMakePayment to check if the user can buy in-app-purchases
-    /// - PurchaseAsync to buy a product
-    /// - RestoreAsync to restore previously bought products
+    /// Key class that provides access to StoreKit in-app-purchases features.<br/>
+    /// Call:<br/>
+    /// <see cref="StartAsync"/> to add an Observer to the Queue. Usually called in AppDelegate<br/>
+    /// <see cref="StopAsync" /> to remove the Observer from the Queue<br/>
+    /// <see cref="LoadProductsAsync(string[], ProductType)"/> to retrieve a list of Products<br/>
+    /// <see cref="CanMakePayments" /> to check if the user can buy in-app-purchases<br/>
+    /// <see cref="PurchaseAsync(string)" /> to buy a product<br/>
+    /// <see cref="RestoreAsync(ProductType)" /> to restore previously bought products<br/>
     /// </summary>
     [Preserve(AllMembers = true)]
     public class InAppPurchaseService : IInAppPurchaseService
@@ -27,6 +27,12 @@ namespace Companova.Xamarin.InAppPurchase.Service
 
         // Payment Observer which will get notifications about Purchased and Restored products
         private PaymentObserver _paymentObserver;
+
+        /// <summary>
+        /// Gets or sets a callback for out of band purchases to complete.
+        /// These are the IAPs that a user makes from the App Store (not from the App) 
+        /// </summary>
+        public static Action<InAppPurchaseResult> OnPurchasedOutOfApp { get; set; } = null;
 
         /// <summary>
         /// Initializes the Payment Observer and adds it to the Payment Queue
@@ -289,9 +295,27 @@ namespace Companova.Xamarin.InAppPurchase.Service
                         SKPaymentQueue.DefaultQueue.FinishTransaction(transaction);
                         break;
                     case SKPaymentTransactionState.Purchased:
-                        _transactionPurchased?.TrySetResult(transaction.ToInAppPurchase());
-                        // Reset the Task
-                        _transactionPurchased = null;
+                        InAppPurchaseResult result = transaction.ToInAppPurchase();
+
+                        // If _transactionPurchased Task is not set, then it means the user initiated the out of the app purchase process
+                        // e.g. purchasing IAP from the App Store
+                        if (_transactionPurchased == null)
+                        {
+                            Debug.WriteLine($"_transactionPurchased is null. Continue with the OnPurchasedOutOfApp call");
+
+                            InAppPurchaseService.OnPurchasedOutOfApp.Invoke(result);
+                        }
+                        else
+                        {
+                            // Normal Purchase flow when the user clicks purchase button.
+
+                            Debug.WriteLine($"_transactionPurchased is NOT null. Continue with the normal flow");
+
+                            _transactionPurchased?.TrySetResult(transaction.ToInAppPurchase());
+                            // Reset the Task
+                            _transactionPurchased = null;
+                        }
+
                         SKPaymentQueue.DefaultQueue.FinishTransaction(transaction);
                         break;
                     case SKPaymentTransactionState.Failed:

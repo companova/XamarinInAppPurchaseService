@@ -12,14 +12,13 @@ using Android.BillingClient.Api;
 namespace Companova.Xamarin.InAppPurchase.Service
 {
     /// <summary>
-    /// Key class that provides access to StoreKit in-app-purchases features.
-    /// Call:
-    /// - Start to add an Observer to the Queue
-    /// - Stop to remove the Observer from the Queue
-    /// - LoadProductsAsync to retrieve a list of Products
-    /// - CanMakePayment to check if the user can buy in-app-purchases
-    /// - PurchaseAsync to buy a product
-    /// - RestoreAsync to restore previously bought products
+    /// Key class that provides access to Billing Client in-app-purchases features.<br/>
+    /// Call:<br/>
+    /// <see cref="StartAsync"/> to connect to Billing Client<br/>
+    /// <see cref="StopAsync"/> to disconnect from Billing Client<br/>
+    /// <see cref="LoadProductsAsync(string[], ProductType)"/> to retrieve a list of Products<br/>
+    /// <see cref="PurchaseAsync(string)"/> to buy a product<br/>
+    /// <see cref="RestoreAsync(ProductType)"/> to restore previously bought products<br/>
     /// </summary>
     [Preserve(AllMembers = true)]
     public class InAppPurchaseService : Java.Lang.Object, IPurchasesUpdatedListener, IBillingClientStateListener,
