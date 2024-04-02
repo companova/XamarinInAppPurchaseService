@@ -12,8 +12,22 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  nuGetToolVersion: '6.1.0'
 
 steps:
+- task: NuGetToolInstaller@1
+  displayName: 'Install Nuget - $(nuGetToolVersion)'
+  inputs:
+    versionSpec: '$(nuGetToolVersion)'
+
+# Ensure Java SDK is available for the Build. See:
+# https://github.com/actions/runner-images/issues/8828
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '11'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+
 - task: NuGetCommand@2
   displayName: 'Restore Nuget Packages'
   inputs:
