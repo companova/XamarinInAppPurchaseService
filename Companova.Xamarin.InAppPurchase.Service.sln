@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InAppPurchase.Service", "src\InAppPurchase.Service.csproj", "{1DF14CAD-2404-4008-A88C-EE5C5998E10E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InAppPurchase.Service", "src\InAppPurchase.Service.csproj", "{1DF14CAD-2404-4008-A88C-EE5C5998E10E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3F573B2A-1086-4730-AD69-34A41256CD50}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
