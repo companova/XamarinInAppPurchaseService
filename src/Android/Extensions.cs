@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Android.BillingClient.Api;
 
 namespace Companova.Xamarin.InAppPurchase.Service
@@ -57,7 +58,7 @@ namespace Companova.Xamarin.InAppPurchase.Service
             {
                 TransactionDateUtc = new DateTime(p.PurchaseTime),
                 Id = p.OrderId,
-                ProductId = p.Sku,
+                ProductId = p.Products.FirstOrDefault(),
                 Acknowledged = p.IsAcknowledged,
                 AutoRenewing = p.IsAutoRenewing,
                 State = p.GetPurchaseState(),

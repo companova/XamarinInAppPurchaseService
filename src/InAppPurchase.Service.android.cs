@@ -22,7 +22,6 @@ namespace Companova.Xamarin.InAppPurchase.Service
     /// </summary>
     [Preserve(AllMembers = true)]
     public class InAppPurchaseService : Java.Lang.Object, IPurchasesUpdatedListener, IBillingClientStateListener,
-        IPurchaseHistoryResponseListener,
         IInAppPurchaseService
     {
 
@@ -86,31 +85,6 @@ namespace Companova.Xamarin.InAppPurchase.Service
             _transactionPurchased = null;
 
             return;
-        }
-
-        #endregion
-
-        #region IPurchaseHistoryResponseListener
-
-        /// <summary>
-        /// Callback used by Billing Client
-        /// </summary>
-        /// <param name="result"></param>
-        /// <param name="listOfPurchaseHistoryRecords"></param>
-        public void OnPurchaseHistoryResponse(BillingResult result, IList<PurchaseHistoryRecord> listOfPurchaseHistoryRecords)
-        {
-            Log.Debug(_billingTag, $"In OnSkuDetailsResponse: Code: {result.ResponseCode}, Message: {result.DebugMessage}");
-            Log.Debug(_billingTag, $"listOfPurchaseHistoryRecords is null == {listOfPurchaseHistoryRecords == null}");
-
-            if (listOfPurchaseHistoryRecords == null)
-            {
-                return;
-            }
-
-            foreach (PurchaseHistoryRecord r in listOfPurchaseHistoryRecords)
-            {
-                Log.Debug(_billingTag, $"{r.Sku}, {r.PurchaseTime}, {r.OriginalJson}");
-            }
         }
 
         #endregion
@@ -335,37 +309,31 @@ namespace Companova.Xamarin.InAppPurchase.Service
         /// </summary>
         /// <param name="productType">Product Type (inapp or subs)</param>
         /// <returns>An array of previous purchases</returns>
-        public Task<List<InAppPurchaseResult>> RestoreAsync(ProductType productType)
+        public async Task<List<InAppPurchaseResult>> RestoreAsync(ProductType productType)
         {
             if (_billingClient == null || !_billingClient.IsReady)
                 throw new InAppPurchaseException(PurchaseError.DeveloperError, "Billing Client is not connected");
 
             string skuType = GetBillingSkuType(productType);
 
-            // Query existing Purchases
-            Purchase.PurchasesResult result = _billingClient.QueryPurchases(skuType);
-            if (result.BillingResult.ResponseCode != BillingResponseCode.Ok)
-            {
-                throw new InAppPurchaseException(result.BillingResult.ResponseCode.ToPurchaseError(),
-                    result.BillingResult.DebugMessage);
-            }
+            // Query existing Purchases. Much simpler in 5.0 than in 4.0
+            QueryPurchasesParams query = QueryPurchasesParams.NewBuilder().SetProductType(skuType).Build();
+            QueryPurchasesResult purchasesResult = await _billingClient.QueryPurchasesAsync(query);
 
-            // Return null array
-            if (result.PurchasesList == null)
-                return Task.FromResult<List<InAppPurchaseResult>>(null);
+            IList<Purchase> listOfRestoredPurchases = purchasesResult.Purchases;
 
             // Otherwise, create an array and return it
-            List<InAppPurchaseResult> purchases = new List<InAppPurchaseResult>(result.PurchasesList.Count);
-            foreach (Purchase p in result.PurchasesList)
+            List<InAppPurchaseResult> purchases = new List<InAppPurchaseResult>(listOfRestoredPurchases.Count);
+            foreach (Purchase p in listOfRestoredPurchases)
             {
-                Log.Debug(_billingTag, $"Sku: {p.Sku}, Acknowledged: {p.IsAcknowledged}, State: {p.PurchaseState}");
+                Log.Debug(_billingTag, $"Sku: {p.Products.FirstOrDefault()}, Acknowledged: {p.IsAcknowledged}, State: {p.PurchaseState}");
 
                 // Convert BillingClient Purchases
                 purchases.Add(p.ToInAppPurchase());
             }
 
             // Return purchases
-            return Task.FromResult(purchases);
+            return purchases;
         }
 
         private string GetBillingSkuType(ProductType productType)
