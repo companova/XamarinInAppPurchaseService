@@ -14,10 +14,10 @@
     <PackageId>Companova.Xamarin.InAppPurchase.Service</PackageId>
     
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
-    <Version>1.0.0</Version>
-    <PackageVersion>1.0.0</PackageVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyFileVersion>2.0.0.0</AssemblyFileVersion>
+    <Version>2.0.0</Version>
+    <PackageVersion>2.0.0</PackageVersion>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
@@ -33,19 +33,19 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/companova/XamarinInAppPurchaseService/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/companova/XamarinInAppPurchaseService/</RepositoryUrl>
-    <PackageReleaseNotes>Initial Beta Release</PackageReleaseNotes>
+    <PackageReleaseNotes>Upgraded to Android SDK 13, Android Billing Library to 5.2.0</PackageReleaseNotes>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <!--<PackageIconUrl>ICON URL</PackageIconUrl>-->
-    <PackageTags>xamarin, ios, android, xamarin.forms, plugin, inappbilling, inapppurchase, Companova, Companova.Xamarin.InAppPurchase.Service</PackageTags>
+    <PackageTags>xamarin, ios, android, xamarin.forms, plugin, billing client, inappbilling, inapppurchase, Companova, Companova.Xamarin.InAppPurchase.Service</PackageTags>
     
     <Title>Companova.Xamarin.InAppPurchase Plugin/Service for Xamarin (iOS and Android)</Title>
     <Summary>Xamarin In-App-Purchase Plugin/Service for iOS and Android Mobile Applications</Summary>
     <Description>Xamarin In-App-Purchase Plugin/Service for iOS and Android Mobile Applications</Description>
-    
-    
+
     <Owners>Dima Maltsev</Owners>
     <Authors>Dima Maltsev</Authors>
     <Company>CompaNova LLC</Company>
-    <Copyright>Copyright 2020 - 2021</Copyright>
+    <Copyright>Copyright 2020 - 2024</Copyright>
 
     <!--When built in 2019 will remove extra references on pack-->
     <DisableExtraReferences>true</DisableExtraReferences>
@@ -89,6 +89,7 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+    <None Include="..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
   
 </Project>
